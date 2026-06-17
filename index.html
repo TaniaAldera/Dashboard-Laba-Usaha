@@ -5,27 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Laba Usaha Per Outlet — KANWIL III SUMBAGSEL</title>
     
-    <!-- Library Chart.js untuk visualisasi grafik -->
+    <!-- Library Chart.js untuk visualisasi grafik [1] -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
     
     <!-- Menghubungkan ke file CSS eksternal -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Header Dashboard -->
+    <!-- Header Dashboard [2] -->
     <div class="header">
         <div class="header-logo">BRI</div>
         <div class="header-text">
             <h1>Dashboard Laba Usaha — KANWIL III SUMBAGSEL</h1>
-            <p>Realisasi per Outlet sd. 31 Mei 2026 | Kanwil III Palembang</p>
+            <p id="subHeaderDate">Realisasi per Outlet sd. 31 Mei 2026</p>
         </div>
         <div class="header-right">
-            <strong id="lastUpdate">Periode: sd. 31 Mei 2026</strong>
-            <span>Data diambil dari file Excel aktif</span>
+            <!-- Fitur Baru: Pilih Bulan -->
+            <div style="margin-bottom: 5px; font-weight: 700;">PILIH PERIODE:</div>
+            <select id="monthFilter" class="filter-select" onchange="changeMonth()">
+                <option value="Mei" selected>Mei 2026</option>
+                <option value="April">April 2026</option>
+                <option value="Maret">Maret 2026</option>
+                <option value="Februari">Februari 2026</option>
+                <option value="Januari">Januari 2026</option>
+            </select>
         </div>
     </div>
 
-    <!-- Navigasi Tab -->
+    <!-- Navigasi Tab [2, 4] -->
     <div class="nav-tabs">
         <button class="nav-tab active" onclick="switchTab('overview')">Overview Kanwil</button>
         <button class="nav-tab" onclick="switchTab('area')">Per Area</button>
@@ -34,7 +41,7 @@
     </div>
 
     <div class="main">
-        <!-- TAB OVERVIEW: Menampilkan ringkasan seluruh Kanwil -->
+        <!-- TAB OVERVIEW: Ringkasan Kanwil [3-6] -->
         <div id="tab-overview" class="tab-content active">
             <div style="margin-bottom:12px" id="kpi-overview"></div>
             <div class="grid-2">
@@ -43,7 +50,7 @@
                     <div class="card-body"><div class="chart-wrap-lg"><canvas id="chartAreaLaba"></canvas></div></div>
                 </div>
                 <div class="card">
-                    <div class="card-header"><span class="card-title">Pencapaian Laba vs Target (MEI 2026)</span></div>
+                    <div class="card-header"><span class="card-title" id="titleAchLaba">Pencapaian Laba vs Target</span></div>
                     <div class="card-body"><div class="chart-wrap-lg"><canvas id="chartAchLaba"></canvas></div></div>
                 </div>
             </div>
@@ -65,13 +72,13 @@
             </div>
         </div>
 
-        <!-- TAB AREA: Menampilkan detail per Area (Lampung, Palembang, Jambi) -->
+        <!-- TAB AREA: Detail Lampung, Palembang, Jambi [3, 7] -->
         <div id="tab-area" class="tab-content">
             <div class="area-grid" id="areaSelectorGrid"></div>
             <div id="areaDetail"></div>
         </div>
 
-        <!-- TAB RANKING: Menampilkan peringkat CP dan Outlet -->
+        <!-- TAB RANKING: Peringkat CP dan Outlet [3, 8-11] -->
         <div id="tab-ranking" class="tab-content">
             <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
                 <span style="font-weight:700;font-size:.85rem">Ranking berdasarkan:</span>
@@ -102,7 +109,7 @@
             </div>
             <div class="grid-2">
                 <div class="card">
-                    <div class="card-header"><span class="card-title" id="rankTitle">Top 10 CP berdasarkan Laba</span></div>
+                    <div class="card-header"><span class="card-title" id="rankTitle">Peringkat</span></div>
                     <div class="card-body"><div class="chart-wrap-lg"><canvas id="chartRank"></canvas></div></div>
                 </div>
                 <div class="card">
@@ -112,7 +119,7 @@
             </div>
         </div>
 
-        <!-- TAB DETAIL: Menampilkan data hingga level outlet spesifik -->
+        <!-- TAB DETAIL: Detail Outlet Spesifik [11-13] -->
         <div id="tab-detail" class="tab-content">
             <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
                 <select class="filter-select" id="detailArea" onchange="onDetailAreaChange()">
@@ -143,7 +150,7 @@
         </div>
     </div>
 
-    <!-- Menghubungkan ke file JavaScript eksternal -->
+    <!-- Menghubungkan ke file JavaScript eksternal [14] -->
     <script src="script.js"></script>
 </body>
 </html>
