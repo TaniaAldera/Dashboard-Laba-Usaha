@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Laba Usaha Per Outlet — KANWIL III SUMBAGSEL</title>
+    
+    <!-- Library Chart.js untuk visualisasi grafik -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    
+    <!-- Menghubungkan ke file CSS eksternal -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header Dashboard -->
+    <div class="header">
+        <div class="header-logo">BRI</div>
+        <div class="header-text">
+            <h1>Dashboard Laba Usaha — KANWIL III SUMBAGSEL</h1>
+            <p>Realisasi per Outlet sd. 31 Mei 2026 | Kanwil III Palembang</p>
+        </div>
+        <div class="header-right">
+            <strong id="lastUpdate">Periode: sd. 31 Mei 2026</strong>
+            <span>Data diambil dari file Excel aktif</span>
+        </div>
+    </div>
+
+    <!-- Navigasi Tab -->
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="switchTab('overview')">Overview Kanwil</button>
+        <button class="nav-tab" onclick="switchTab('area')">Per Area</button>
+        <button class="nav-tab" onclick="switchTab('ranking')">Ranking</button>
+        <button class="nav-tab" onclick="switchTab('detail')">Detail Outlet</button>
+    </div>
+
+    <div class="main">
+        <!-- TAB OVERVIEW: Menampilkan ringkasan seluruh Kanwil -->
+        <div id="tab-overview" class="tab-content active">
+            <div style="margin-bottom:12px" id="kpi-overview"></div>
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Laba per Area</span></div>
+                    <div class="card-body"><div class="chart-wrap-lg"><canvas id="chartAreaLaba"></canvas></div></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Pencapaian Laba vs Target (MEI 2026)</span></div>
+                    <div class="card-body"><div class="chart-wrap-lg"><canvas id="chartAchLaba"></canvas></div></div>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header"><span class="card-title">BOPO per Area</span></div>
+                    <div class="card-body"><div class="chart-wrap"><canvas id="chartBopo"></canvas></div></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span class="card-title">ROA & ROE per Area</span></div>
+                    <div class="card-body"><div class="chart-wrap"><canvas id="chartRoaRoe"></canvas></div></div>
+                </div>
+            </div>
+            <div class="card" style="margin-bottom:20px">
+                <div class="card-header"><span class="card-title">Ringkasan per Area</span></div>
+                <div class="card-body">
+                    <div class="table-wrap"><table id="tableArea"></table></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB AREA: Menampilkan detail per Area (Lampung, Palembang, Jambi) -->
+        <div id="tab-area" class="tab-content">
+            <div class="area-grid" id="areaSelectorGrid"></div>
+            <div id="areaDetail"></div>
+        </div>
+
+        <!-- TAB RANKING: Menampilkan peringkat CP dan Outlet -->
+        <div id="tab-ranking" class="tab-content">
+            <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
+                <span style="font-weight:700;font-size:.85rem">Ranking berdasarkan:</span>
+                <select class="filter-select" id="rankMetric" onchange="renderRanking()">
+                    <option value="laba">Laba Usaha</option>
+                    <option value="ach_laba_mei">% Pencapaian Laba</option>
+                    <option value="bopo">BOPO (terbaik = terendah)</option>
+                    <option value="roa">ROA</option>
+                    <option value="roe">ROE</option>
+                    <option value="pendapatan">Pendapatan</option>
+                </select>
+                <select class="filter-select" id="rankLevel" onchange="renderRanking()">
+                    <option value="cp">Level CP/CPS</option>
+                    <option value="outlet">Level Outlet/UPC</option>
+                </select>
+                <select class="filter-select" id="rankArea" onchange="renderRanking()">
+                    <option value="all">Semua Area</option>
+                    <option value="AREA LAMPUNG">Area Lampung</option>
+                    <option value="AREA PALEMBANG">Area Palembang</option>
+                    <option value="AREA JAMBI">Area Jambi</option>
+                </select>
+                <select class="filter-select" id="rankTop" onchange="renderRanking()">
+                    <option value="10">Top 10</option>
+                    <option value="20">Top 20</option>
+                    <option value="50">Top 50</option>
+                    <option value="all">Semua</option>
+                </select>
+            </div>
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header"><span class="card-title" id="rankTitle">Top 10 CP berdasarkan Laba</span></div>
+                    <div class="card-body"><div class="chart-wrap-lg"><canvas id="chartRank"></canvas></div></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Tabel Ranking</span></div>
+                    <div class="card-body table-wrap" style="max-height:370px"><div id="rankList"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB DETAIL: Menampilkan data hingga level outlet spesifik -->
+        <div id="tab-detail" class="tab-content">
+            <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
+                <select class="filter-select" id="detailArea" onchange="onDetailAreaChange()">
+                    <option value="">-- Pilih Area --</option>
+                    <option>AREA LAMPUNG</option>
+                    <option>AREA PALEMBANG</option>
+                    <option>AREA JAMBI</option>
+                </select>
+                <select class="filter-select" id="detailCP" onchange="renderDetailOutlets()">
+                    <option value="">-- Pilih CP --</option>
+                </select>
+            </div>
+            <div id="detailKPI" style="margin-bottom:16px"></div>
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Laba per Outlet</span></div>
+                    <div class="card-body"><div class="chart-wrap-lg"><canvas id="chartOutletLaba"></canvas></div></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span class="card-title">BOPO per Outlet</span></div>
+                    <div class="card-body"><div class="chart-wrap-lg"><canvas id="chartOutletBopo"></canvas></div></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><span class="card-title">Detail Outlet</span></div>
+                <div class="card-body table-wrap"><table id="tableOutlet"></table></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menghubungkan ke file JavaScript eksternal -->
+    <script src="script.js"></script>
+</body>
+</html>
