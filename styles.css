@@ -37,7 +37,7 @@ body {
     margin: 0 auto;
 }
 
-/* Header */
+/* Header & Filter Bulan */
 .header {
     background: linear-gradient(135deg, var(--primary) 0%, #0044bb 100%);
     color: #fff;
@@ -81,9 +81,16 @@ body {
     opacity: .85;
 }
 
-.header-right strong {
-    font-size: 1rem;
-    display: block;
+/* Style Khusus Filter Bulan di Header */
+.header-right .filter-select {
+    background: #fff;
+    color: var(--primary);
+    font-weight: 800;
+    border: 2px solid var(--accent);
+    padding: 8px 15px;
+    border-radius: 10px;
+    min-width: 150px;
+    margin-top: 5px;
 }
 
 /* Navigasi Tab */
@@ -181,14 +188,12 @@ body {
 
 .card-body { padding: 16px 18px; }
 
-/* Grid System */
+/* Grid & Visualisasi */
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-
-/* Visualisasi & Tabel */
-.chart-wrap { position: relative; height: 240px; }
 .chart-wrap-lg { position: relative; height: 320px; }
+.chart-wrap { position: relative; height: 240px; }
 
+/* Tabel Dashboard */
 .table-wrap {
     overflow-x: auto;
     max-height: 400px;
@@ -221,7 +226,7 @@ tbody td { padding: 9px 12px; border-bottom: 1px solid #f1f5f9; }
 .td-name { font-weight: 600; color: var(--primary); }
 .td-num { text-align: right; font-family: monospace; }
 
-/* Badge & Pill Status */
+/* Status Badge & Progress */
 .pill {
     display: inline-block;
     padding: 2px 10px;
@@ -230,21 +235,21 @@ tbody td { padding: 9px 12px; border-bottom: 1px solid #f1f5f9; }
     font-weight: 700;
 }
 
-.pill-g { background: var(--success); color: var(--success-dark); }
-.pill-r { background: var(--danger); color: var(--danger-dark); }
-.pill-y { background: var(--warning); color: var(--warning-dark); }
+.pill-g { background: #d1fae5; color: #065f46; }
+.pill-r { background: #fee2e2; color: #991b1b; }
+.pill-y { background: #fef3c7; color: #92400e; }
 
-/* Filter & Ranking */
-select.filter-select {
-    padding: 6px 12px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    font-size: .8rem;
-    color: var(--text);
-    background: #fff;
-    cursor: pointer;
+.progress-bar {
+    height: 5px;
+    border-radius: 3px;
+    background: #e2e8f0;
+    margin-top: 3px;
+    overflow: hidden;
 }
 
+.progress-fill { height: 100%; background: var(--primary); border-radius: 3px; }
+
+/* Ranking Row Styles */
 .rank-row {
     display: flex;
     align-items: center;
@@ -271,16 +276,6 @@ select.filter-select {
 .rank-num.silver { background: #94a3b8; }
 .rank-num.bronze { background: #c2652a; }
 
-.progress-bar {
-    height: 5px;
-    border-radius: 3px;
-    background: #e2e8f0;
-    margin-top: 3px;
-    overflow: hidden;
-}
-
-.progress-fill { height: 100%; background: var(--primary); }
-
 /* Area Tab Cards */
 .area-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
 
@@ -303,8 +298,11 @@ select.filter-select {
 .area-card h3 { font-size: .9rem; color: var(--primary); font-weight: 800; margin-bottom: 8px; }
 .area-card .big { font-size: 1.5rem; font-weight: 900; color: var(--text); }
 
-/* Responsivitas */
+/* Responsivitas (Mobile Fix) */
 @media(max-width:768px) {
-    .grid-2, .grid-3, .area-grid { grid-template-columns: 1fr; }
+    .header { flex-direction: column; text-align: center; }
+    .header-right { margin-left: 0; text-align: center; margin-top: 10px; }
+    .grid-2, .area-grid { grid-template-columns: 1fr; }
     .kpi-row { grid-template-columns: 1fr 1fr; }
 }
+``` [1-13]
