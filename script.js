@@ -48,7 +48,7 @@ function loadMonth(month) {
   hideNoData();
   resetDerivedData();
 
-  fetch(`data/${month}.json?v=${Date.now()}`)
+  fetch(`nama-folder/${month}.json?v=${Date.now()}`)
     .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(json => {
       if (json._placeholder) { showLoading(false); showNoData(month); return; }
